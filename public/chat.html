@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<!--Head-->
+
+<head>
+    <!--Viewport-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3.0, user-scalable=yes">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.4/dist/showdown.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Hind:300" />
+    <!--Main-->
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+    <!--chat begin-->
+    <div id="chat-collapsible__container">
+        <div class="disconnected">
+            Disconnected... reconnecting!
+        </div>
+        <div class="offline">
+            Offline! Reload to reconnect.
+        </div>
+        <!--.chat__fixed-container-->
+        <div class="chat__fixed-container">
+            <div class="chat-collapse show" id="chat-collapsible">
+                <div class="chat-collapsible">
+                    <!--.chat__container - components/_chat.pug-->
+                    <div class="chat__container">
+                        <!--.chat__header-->
+                        <div class="chat__header" id="chat__header__container">
+                            
+                        </div>
+                        <!--.chat__body-->
+                        <div class="chat__body" id="chat__body">
+                            <div class="container-fluid">
+                                <div class="wrapper">
+                                    <div id="message_window">
+                                        <div class="disconnected">
+                                            Disconnected... reconnecting!
+                                        </div>
+                                        <div class="offline">
+                                            Offline! Reload to reconnect.
+                                        </div>
+                                            <div id="message_list">
+                                                <div id="message_template">
+                                                    <div class="message {{message.type}}">
+                                                        {{#ifCond message.type 'outgoing'}}
+                                                        	{{#if message.isTyping}}
+                                                                <span class="chat__typing-indicator">
+		                  				                      		<span></span>
+	                                                                <span></span>
+	                                                                <span></span>
+                                                                </span>
+                                                            {{else}} 
+		                                                        <div class="chat__message-container d-flex justify-content-end">
+		                                                            <div class="chat__message chat__message--user">
+		                                                                {{{message.html}}} 
+		                                                                {{#if message.open_link}}
+		                                                                <a href="{{{message.open_link}}}" target="_blank" class="button_message">{{#if message.link_title}}{{message.link_title}}{{else}}{{message.open_link}}{{/if}}</a> {{/if}} {{#message.files}}
+		                                                                <div class="file_attachment">
+		                                                                    {{#if image}}
+		                                                                    <img src="{{{url}}}" alt="{{{url}}}" /> {{else}}
+		                                                                    <a href="{{{url}}}" title="{{{url}}}">{{{url}}}</a> {{/if}}
+		                                                                </div>
+		                                                                {{/message.files}}
+		                                                            </div>
+		                                                        </div>
+                                                            {{/if}} 
+                                                        {{else}}
+
+                                                        	{{#if message.isTyping}}
+		                                                        <div class="chat__message-container d-flex">
+		                                                            <img class="chat__specialist-photo bg-placeholder rounded-circle" src="{{recruiter.conciergePic}}" alt="">
+			                                                        <span class="chat__typing-indicator">
+				                  				                      	<span></span>
+			                                                            <span></span>
+			                                                            <span></span>
+			                                                        </span>
+			                                                    </div>
+	                                                        {{else}} 
+	                                                        	<div class="chat__message-container d-flex">
+		                                                            <img class="chat__specialist-photo bg-placeholder rounded-circle" src="{{recruiter.conciergePic}}" alt="">
+		                                                            <div class="chat__message chat__message--specialist">
+		                                                                {{{message.html}}} 
+
+		                                                                {{#if message.open_link}}
+		                                                                <a href="{{{message.open_link}}}" target="_blank" class="button_message">{{#if message.link_title}}{{message.link_title}}{{else}}{{message.open_link}}{{/if}}</a> {{/if}} {{#message.files}}
+		                                                                <div class="file_attachment">
+		                                                                    {{#if image}}
+		                                                                    <img src="{{{url}}}" alt="{{{url}}}" /> {{else}}
+		                                                                    <a href="{{{url}}}" title="{{{url}}}">{{{url}}}</a> {{/if}}
+		                                                                </div>
+		                                                                {{/message.files}}
+		                                                            </div>
+		                                                        </div>
+	                                                        {{/if}} 
+                                                        
+                                                        {{/ifCond}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div id="message_replies"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.chat__body-->
+                        <!--.chat__footer-->
+                        <div class="chat__footer">
+                            <div class="container-fluid">
+                                <!--.chat__form-->
+                                <form onsubmit="Botkit.send(Botkit.input.value, event)" class="chat__form">
+                                    <input type="text" id="messenger_input" class="chat__textarea" placeholder="Enter Your Message" autocomplete="off">
+                                    <button class="chat__btn" type="submit">
+                                        <img src="img/paper-plane.svg" alt="" />
+                                    </button>
+                                </form>
+                                <!--/.chat__form-->
+                                <p class="chat__footer-copyright">powered with
+                                    <img src="img/heart.svg" alt="">&nbsp; by HireHumanly</p>
+                            </div>
+                        </div>
+                        <!--/.chat__footer-->
+                    </div>
+                    <!--.chat__container - components/_chat.pug-->
+                </div>
+            </div>
+        </div>
+        <!--/.chat__fixed-container-->
+    </div>
+    <script id="recruiter-template" type="text/x-handlebars-template">
+      <div class="container-fluid">
+          <div class="chat__specialist-big-photo-container">
+              <img class="chat__specialist-big-photo" src="{{conciergePic}}" alt="">
+          </div>
+          <div class="chat__specialist-name-position-company">
+              <h2 class="chat__specialist-name">{{conciergeAlias}}</h2>
+              <hr class="chat__specialist-separator">
+              <h3 class="chat__specialist-position">{{conciergeTitle}}</h3>
+              <h4 class="chat__specialist-company">{{organizationName}}</h4>
+          </div>
+      </div>
+    </script>
+    <!--chat end-->
+    <script src="client.js"></script>
+</body>
+
+</html>
